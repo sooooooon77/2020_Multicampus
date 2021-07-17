@@ -1,0 +1,76 @@
+▷ 사원들의 이름 부서번호 부서이름을 출력
+   단 부서가 없는 직원까지 모두 출력( Outer Join )	
+	이름 			부서 		부서명 
+	Steven King 		90 		Executive 
+	Neena Kochhar 		90 		Executive 
+	Lex De Haan 		90 		Executive 
+	Alexander Hunold 		60 		IT 
+	Bruce Ernst 		60 		IT 
+	David Austin 		60 		IT 
+	Valli Pataballa 		60 		IT 
+	Diana Lorentz 		60 		IT 
+	...
+	107명
+
+
+▷ 인센티브를 받는 사원의 이름, 인센티브, 부서명을 
+    인센티브가 큰 순서로 출력
+	이름			인센티브	부서명 
+	Russell 			.4 		Sales 
+	McEwen 			.35 		Sales 
+	Sully 			.35 		Sales 
+	King 			.35 		Sales 
+	Doran 			.3 		Sales 
+	Smith 			.3 		Sales 
+	Partners 			.3 		Sales 
+	Abel 			.3 		Sales 
+	Cambrault 		.3 		Sales 
+	Errazuriz 			.3 		Sales 
+	...	
+	34명	
+
+
+▷ 사원명, 부서명, 도시를 출력( Outer Join )
+	이름 			부서명 		도시 
+	King 			Executive 	Seattle 
+	Kochhar 			Executive 	Seattle 
+	De Haan 			Executive 	Seattle 
+	Hunold 			IT 		Southlake 
+	Ernst 			IT 		Southlake 
+	Austin 			IT 		Southlake 
+	Pataballa 			IT 		Southlake 
+	Lorentz 			IT 		Southlake 
+	...
+	107명
+
+
+▷ 사원명, 업무, 급여, 급여등급을 높은 등급부터 출력
+    non-equal join.
+	이름 		업무 				급여 	등급 
+    	King 		President 			24000 	5 
+	Kochhar 		Administration Vice President 	17000 	4 
+	De Haan 		Administration Vice President 	17000 	4 
+	Vishney 		Sales Representative 		10500 	3 
+	Zlotkey 		Sales Manager 			10500 	3 
+	Cambrault 	Sales Manager 			11000 	3 
+	Raphaely 		Purchasing Manager 		11000 	3 
+	Abel 		Sales Representative 		11000 	3 
+	...
+	107명
+
+
+▷ Abel 이라는 직원의 사원명, 부서번호와 같은 부서 직원을 
+   사원명순 동료이름순으로 출력
+   self join. 단 자신을 동료로 출력하면 안된다.
+	자신 	부서번호 	동료 
+	Abel 	80 		Ande 
+	Abel 	80 		Banda 
+	Abel 	80 		Bates 
+	Abel 	80 		Bernstein 
+	Abel 	80 		Bloom 
+	Abel 	80 		Cambrault 
+	Abel 	80 		Cambrault 
+	Abel 	80 		Doran 
+	Abel 	80 		Errazuriz 
+	...
+	33명

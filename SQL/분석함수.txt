@@ -1,0 +1,47 @@
+-- 분석 함수 --
+-- 그룹함수 	전체 행을 한 번만 계산
+-- 분석함수	전체 행을 매번 계산
+
+select last_name 이름, salary 연봉, 
+FIRST_VALUE(salary) over( order by salary desc ) 최고연봉
+from employees;
+
+select last_name 이름, salary 연봉, 
+FIRST_VALUE(salary) over( order by salary ) 최저연봉
+from employees;
+
+select last_name 이름, salary 연봉, 
+FIRST_VALUE(salary) over( order by salary rows 3 preceding ) 최저연봉
+from employees;
+
+select last_name 이름, salary 연봉, 
+Last_VALUE(salary) 
+over( order by salary rows between 3 preceding and 3 following ) "범위내 마지막값"
+-- 위로 3행 아래로 3행 총 7행 중 마지막 행의 값
+from employees;
+
+select last_name 이름, salary 연봉,
+FIRST_VALUE( salary ) 
+over( order by salary desc range between 1000 preceding and 1000 following ) "범위내 최저"
+from employees;
+
+select last_name 이름, department_id 부서, 
+avg( salary ) over( partition by department_id ) "부서별 평균"
+from employees;
+
+select last_name 이름, department_id 부서, avg( salary ) 평균연봉
+from employees
+group by department_id;
+
+select last_name 이름, department_id 부서, 
+trunc( avg( salary ) over( partition by department_id ), 2) 평균연봉,
+trunc( sum( salary ) over( partition by department_id ), 2) 연봉합계,
+trunc( count( salary ) over( partition by department_id ), 2) 인원수
+from employees;
+
+
+select last_name 이름, salary 연봉,
+row_number() over( order by salary desc ) 순위,
+rank() over( order by salary desc ) 순위,
+dense_rank() over( order by salary desc ) 순위
+from employees;

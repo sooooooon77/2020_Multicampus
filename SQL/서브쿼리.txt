@@ -1,0 +1,92 @@
+    이름 연봉 평균연봉 출력
+    연봉이 2500 이하인 사람들 출력
+
+    이름			연봉	    	평균연봉
+    Colmenares 		2500 		6461.83
+    Landry 	    	2400 		6461.83 
+    Markle 	   	2200 		6461.83 
+    Marlow 	    	2500 		6461.83 
+    Olson 			2100 		6461.83 
+    ...
+    11명
+
+    100번 부서 직원들의
+    이름 연봉 최고연봉 최저연봉 연봉-평균연봉 출력
+
+    이름		 연봉		 최고연봉		최저연봉		연봉차
+    Greenberg 	12008 		12008 		6900 		3406 
+    Faviet 		9000 		12008 		6900 		398 
+    Chen 		8200 		12008 		6900 		-401 
+    Sciarra 	7700 		12008 		6900 		-901 
+    Urman 	7800 		12008 		6900 		-801 
+    Popp 		6900 		12008 		6900 		-1701 
+    6명
+
+
+
+
+ 
+▷ last_name 이 Russell 인 사람의 급여보다 많은 급여를 받는 사람의 
+    이름과 연봉를 출력
+	이름 		연봉
+	King 		24000 
+	Kochhar 		17000 
+	De Haan 		17000 
+	3명
+
+
+▷ Russell과 job_id 가 같은 사람의 이름, 부서명, 도시를 출력한다.
+    Russell은 제외. 부서명과 도시는 join으로.
+	이름 		부서명 		도시 
+	Partners 		Sales 		Oxford 
+	Errazuriz 		Sales 		Oxford 
+	Cambrault 	Sales 		Oxford 
+	Zlotkey 		Sales 		Oxford 
+	4명
+
+▷ 부서가 위치한 도시가 Toronto 인 직원들의 사번, 이름을 출력한다. 
+    서브 쿼리 추가 사용.  
+   	사번 		이름 		
+ 	201 		Hartstein 	
+   	202 		Fay 		
+	2명
+
+
+▷ 급여 등급이 B등급인 사람들의 이름, 급여를 모두 출력한다.
+    서브 쿼리를 써서 해결한다.
+	이름 		급여 
+	Kochhar 		17000 
+	De Haan 		17000 
+	2명
+
+
+▷ 유럽대륙에 근무하는 사람들의 이름(last_name)과 부서(department_id) 출력
+    Join / SubQuery 각각 실행	
+
+	이름		부서
+	Mavris		40
+	Zlotkey		80
+	Vishney		80
+	Tuvault		80
+	Tucker		80
+	Taylor		80
+	Sully		80
+	Smith		80
+	Smith		80
+	... ...
+	Baer		70
+	36명
+
+
+
+
+
+
+
+
+
+
+
+
+
+

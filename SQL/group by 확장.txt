@@ -1,0 +1,31 @@
+-- GROUP BY 확장 --
+-- 우측부터 하나씩 제거하면서 결과를 반환
+-- group by             ( a, b, c )
+-- group by rollup()    ( a, b, c ) ( a, b ) ( a ) ()
+-- group by cube()      ( a, b, c ) ( a, b ) ( a, c ) ( b, c ) (a) (b) (c) ()
+-- group by grouping sets()     조합을 선택한다.
+
+-- group by ( a, b )
+select department_id 부서, job_id 업무, round( avg( salary ) ) 연봉평균
+from employees
+group by department_id, job_id
+order by department_id;
+
+-- group by rollup ( a, b ) ( a ) ()
+select department_id 부서, job_id 업무, round( avg( salary ) ) 연봉평균
+from employees
+group by rollup( department_id, job_id )
+order by department_id;
+
+-- group by cube ( a, b ) ( a ) ( b ) ()
+select department_id 부서, job_id 업무, round( avg( salary ) ) 연봉평균
+from employees
+group by cube( department_id, job_id )
+order by department_id;
+
+-- group by grouping sets ( a, b ) ( a ) ( b ) ()
+-- group by grouping sets( ( a ) ( b ) () )
+select department_id 부서, job_id 업무, round( avg( salary ) ) 연봉평균
+from employees
+group by grouping sets( (department_id), (job_id), () )
+order by department_id;

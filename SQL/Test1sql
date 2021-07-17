@@ -1,0 +1,508 @@
+/* < PLSQL 실습 > */
+/* 01_09 */
+/* <1> */ 
+create table emp_sum
+as
+select deptno, sum(sal) as sum_sal
+from emp
+group by deptno;
+
+select * from emp_sum;
+
+select empno, ename, sal, deptno
+from emp
+where empno = 7788;
+
+delete emp
+where empno = 7788;
+
+select * from emp_sum;
+
+rollback;
+
+/
+set serveroutput on;
+declare
+    emp_rec emp%rowtype;
+    sum_rec emp_sum%rowtype;
+begin
+    select * into emp_rec
+    from emp
+    where empno = 7788;
+    
+    delete emp
+    where empno = 7788;
+    
+    update emp_sum
+    set sum_sal = sum_sal - emp_rec.sal
+    where deptno = emp_rec.deptno;
+    
+    select * into sum_rec
+    from emp_sum
+    where deptno = emp_rec.deptno;
+    
+    dbms_output.put_line ('sum salary : ' || sum_rec.sum_sal );
+end;
+/
+rollback;
+/
+
+
+
+
+
+/* <2> */ 
+set serveroutput on;
+declare
+    v_hiredate date;
+    v_deptno number( 2 ) not null := 10;
+    v_location varchar2 ( 13 ) := 'Atlanta';
+    c_comm constant number := 1400;
+begin
+    dbms_output.put_line ( v_hiredate );
+    dbms_output.put_line ( v_deptno );
+    dbms_output.put_line ( v_location );
+    dbms_output.put_line ( c_comm );
+end;
+/
+
+alter session set nls_date_format = 'DD-MON-RR';
+set serveroutput on;
+declare
+    v_hiredate date := '09-12-13';
+begin
+    dbms_output.put_line ( v_hiredate );
+end;
+/
+
+alter session set nls_date_format = 'RR/MM/DD';
+set serveroutput on;
+declare
+    v_hiredate date := '09-12-13';
+begin
+    dbms_output.put_line ( v_hiredate );
+end;
+/
+
+alter session set nls_date_format = 'RR/MM/DD';
+set serveroutput on;
+declare
+    v_hiredate date := to_date('09-12월-03', 'DD-MON-RR');
+begin
+    dbms_output.put_line( v_hiredate );
+end;
+/
+
+alter session set nls_date_format = 'DD-MON-RR';
+
+
+set serveroutput on;
+declare
+    bf_var binary_float;
+    bd_var binary_double;
+begin
+    bf_var := 270/35;
+    bd_var := 140/0.35;
+    dbms_output.put_line ('bf: '||bf_var);
+    dbms_output.put_line ('bd: '||bd_var);
+end;
+/
+
+set serveroutput on;
+declare
+    bf_var number;
+    bd_var number;
+begin
+    bf_var := 270/35;
+    bd_var := 140/0.35;
+    dbms_output.put_line ('bf: '||bf_var);
+    dbms_output.put_line ('bd: '||bd_var);
+end;
+/
+
+set serveroutput on
+declare
+    v_sal emp.sal%type;
+begin
+    select sal into v_sal
+    from emp
+    where empno = 7788;
+    dbms_output.put_line( v_sal );
+end;
+/
+
+
+
+
+/* 01_10 */
+/* <3> */ 
+set serveroutput on;
+declare
+    v_desc_size integer( 5 );
+    v_prod_description varchar2( 70 ) 
+        := 'You can use this product with your radios for higher frequency';
+begin
+    v_desc_size := length( v_prod_description );
+    dbms_output.put_line( v_desc_size );
+end;
+/
+
+declare
+    v_desc_size integer( 5 );
+    v_prod_description varchar2( 70 )
+        := 'You can use this product with your radios for higher frequecy';
+begin
+    v_desc_size := max(v_prod_description);
+    dbms_output.put_line(v_desc_size);
+end;
+/
+
+declare
+    v_sum number;
+begin
+    select sum(sal) into v_sum
+    from emp;
+    dbms_output.put_line(v_sum);
+end;
+/
+
+create sequence empno_seq start with 1000;
+set serveroutput on;
+declare
+    v_num number:= empno_seq.nextval;
+begin
+    dbms_output.put_line(v_num);
+end;
+/
+
+declare
+    v_num number;
+begin
+    select empno_seq.nextval into v_num
+    from dual;
+    dbms_output.put_line(v_num);
+end;
+/
+
+declare
+    v_outer varchar2( 100 ) := 'Outer Variable';
+begin
+    dbms_output.put_line('Outer : ' || v_outer);
+        declare
+            v_inner varchar2( 100 ) := 'Inner Variable';
+        begin
+            dbms_output.put_line('Outer : ' || v_outer);
+            dbms_output.put_line('Inner : ' || v_inner);
+        end;
+    dbms_output.put_line('Outer : ' || v_outer);
+end;
+/
+
+declare
+    v_outer varchar2( 100 ) := 'Outer Variable';
+    begin
+        declare
+            v_inner varchar2( 100 ) := 'Inner Variable';
+        begin
+            dbms_output.put_line('Outer : ' || v_outer);
+            dbms_output.put_line('Inner : ' || v_inner);
+        end;
+    dbms_output.put_line('Outer : ' || v_outer);
+    dbms_output.put_line('Inner : ' || v_inner);  --에러 -> outer에서 따로 선언 안해주었으므로
+end;
+/
+
+begin <<outer>>
+    declare
+        v_father_name varchar2( 20 ) := 'Patrick';
+        v_date_of_birth date := to_date('20-4월-1972', 'DD-MON-YYYY');
+    begin
+            declare
+                v_child_name varchar2( 20 ) := 'Mike';
+                v_date_of_birth date := to_date('12-12월-2002', 'DD-MON-YYYY');
+            begin
+                dbms_output.put_line('Father"s Name: ' || v_father_name);
+                dbms_output.put_line('Date of Birth: ' || outer.v_date_of_birth);
+                dbms_output.put_line('Chile"s Name: ' || v_child_name);
+                dbms_output.put_line('Date of Birth: ' || v_date_of_birth);
+            end;
+     end;
+end outer;
+/
+
+
+
+
+/* <4> */ 
+begin
+    insert into emp(empno, ename, sal, deptno)
+    values (1234, 'RYU', 3000, 20);
+end;
+/
+select * from emp;
+/
+
+begin
+    update emp
+    set sal = 4000
+    where empno = 1234;
+end;
+/
+select * from emp;
+/
+
+begin
+    delete emp
+    where empno = 1234;
+end;
+/
+select * from emp;
+/
+
+begin
+    update emp
+    set sal = 4000
+    where empno = 7788;
+    
+    update emp
+    set sal = 3500
+    where empno = 7566;
+end;
+/
+select * from emp;
+/
+
+select empno, sal from emp
+where empno in ( 7788, 7566 );
+/
+rollback;
+/
+select empno, sal from emp
+where empno in ( 7788, 7566 );
+/
+set serveroutput on;
+/
+begin
+    update emp
+    set sal = 40000
+    where empno = 7788;
+    dbms_output.put_line( SQL%ROWCOUNT || 'rows updated');
+    
+    delete emp
+    where deptno = 10;
+    dbms_output.put_line( SQL%ROWCOUNT || 'rows deleted');
+end;
+/
+select * from emp;
+/
+rollback;
+/
+
+set serveroutput on;
+declare
+    v_ename varchar2( 10 );
+    v_sal emp.sal%TYPE;
+begin
+    select ename, sal into v_ename, v_sal
+    from emp
+    where empno = 7788;
+    
+    dbms_output.put_line ( v_ename || ' : ' || v_sal );
+end;
+/
+select * from emp;
+/
+
+set serveroutput on;
+declare 
+    v_ename varchar2 ( 10 );
+    v_sal emp.sal%TYPE;
+begin
+    select ename, sal into v_ename, v_sal
+    from emp
+    where deptno = 10;  --에러 -> 값이 여러줄이라
+    
+    dbms_output.put_line(v_ename || ' : ' || v_sal);
+end;
+/
+
+declare
+    v_ename varchar2(10);
+    v_sal emp.sal%TYPE;
+begin
+    select ename, sal into v_ename, v_sal
+    from emp
+    where empno = 1111;  --에러 -> 값이 없어서
+    
+    dbms_output.put_line( v_ename || ' : ' || v_sal );
+end;
+/
+
+begin
+    drop table emp;    --DDL  -> create alter drop  지원 안 함
+end;
+/
+
+
+
+/* 01_13 */
+/* <5> */  
+set serveroutput on;
+declare
+    v_myage number := 10;
+begin
+    if v_myage < 11 then
+        dbms_output.put_line( 'I am a child' );
+    end if;
+end;
+/
+
+declare
+    v_myage number := 31;
+begin
+    if v_myage < 11 then
+        dbms_output.put_line( 'I am a child' );
+    else
+        dbms_output.put_line( 'I am not a child' );
+    end if;
+end;
+/
+
+declare
+    v_myage number := 31;
+begin
+    if v_myage < 11 then
+        dbms_output.put_line( 'I am a child' );
+    elsif v_myage < 20 then
+        dbms_output.put_line( 'I am a young' );
+    elsif v_myage < 30 then
+        dbms_output.put_line( 'I am in my twenties' );
+    elsif v_myage < 40 then
+        dbms_output.put_line( 'I am in my thirties' );
+    else
+        dbms_output.put_line( 'I am always young' );
+    end if;
+end;
+/
+
+declare
+    v_grade char(1) := upper('&grade');
+    v_appraisal varchar2(20);
+begin
+    v_appraisal := case v_grade 
+        when 'A' then 'Excellent'
+        when 'B' then 'Very Good'
+        when 'C' then 'Good'
+        else 'No such grade'
+        end;
+    dbms_output.put_line( 'Grade: ' || v_grade || ', ' || 'Appraisal: ' || v_appraisal);
+end;
+/
+            
+declare
+    v_sum number;
+    v_deptno number := &deptid;
+begin
+    case v_deptno
+        when 10 then
+            select sum(sal) into v_sum from emp where deptno = 10;
+        when 20 then
+            select sum(sal) into v_sum from emp where deptno = 20;
+        when 30 then
+            select sum(sal) into v_sum from emp where deptno = 30;
+        else
+            select sum(sal) into v_sum from emp;
+        end case;
+    dbms_output.put_line( v_sum ); 
+end;
+/
+select * from emp;
+/
+
+declare
+    v_count number(2) := 1;
+begin
+    loop
+        dbms_output.put_line( 'count : ' || to_char( v_count ));
+        v_count := v_count + 1;
+        exit when v_count = 4;
+    end loop;
+end;
+/
+
+declare
+    v_count number(2) := 1;
+begin
+    while v_count <= 3 loop
+        dbms_output.put_line( 'count : ' || to_char( v_count ));
+        v_count := v_count + 1;
+    end loop;
+end;
+/
+
+begin
+    for i in 1..3 loop
+        dbms_output.put_line( 'count : ' || to_char(i));
+    end loop;
+end;
+/
+
+begin
+    for i in reverse 1..3 loop
+        dbms_output.put_line( 'count : ' || to_char(i));
+    end loop;
+end;
+/
+
+declare
+    x number := 3;
+    y number;
+begin
+    <<outer_loop>>
+    loop
+        y := 1;
+        exit when x > 5;
+        
+        <<inner_loop>>
+        loop
+            dbms_output.put_line( x || '*' || y || '=' || x * y );
+            --exit outer_loop when x * y > 15;       --> 4 * 5 = 20 > 15 이므로 여기서 멈춤
+            y := y + 1;
+            exit when y > 5;
+        end loop inner_loop;
+        
+        x := x + 1;
+    end loop outer_loop;
+end;
+/
+
+declare
+    v_total simple_integer := 0;
+begin
+    for i in 1..5 loop
+        v_total := v_total + i;
+        dbms_output.put_line( 'Total is : ' || v_total );
+        
+        continue when i > 3;
+        v_total := v_total + i;
+        dbms_output.put_line( 'Out of loop total is : ' || v_total );
+    end loop;
+end;
+/
+
+declare
+    v_total number := 0;
+begin
+    <<BeforeTopLoop>>
+    for i in 1..5 loop
+        v_total :=  v_total + 1;
+        dbms_output.put_line( 'Outer total is : ' || v_total );
+        
+        for j in 1..5 loop
+            continue BeforeTopLoop when i + j > 5;
+            v_total := v_total + 1;
+            dbms_output.put_line( 'Inner total is : ' || v_total );
+        end loop;
+    end loop;
+end;
+/
